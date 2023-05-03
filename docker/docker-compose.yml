@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  php:
+    build: .
+    container_name: php
+    restart: always
+    tty: true
+    ports:
+      - '80:80'
+    volumes:
+      - ../:/var/www
+    networks:
+      - web
+  redis:
+    image: redis:6.2-alpine3.17
+    container_name: redis
+    restart: always
+    tty: true
+    command: redis-server --requirepass 123
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
+    networks:
+      - web
+volumes:
+  cache:
+    driver: local
+networks:
+  web:
+    driver: bridge
